@@ -77,7 +77,7 @@ namespace Rubik
             sticker.name = $"Sticker_{face}";
             sticker.transform.SetParent(parent, false);
             sticker.transform.localPosition = n * stickerInset;
-            sticker.transform.localRotation = Quaternion.LookRotation(n);
+            sticker.transform.localRotation = Quaternion.LookRotation(-n);
             sticker.transform.localScale = Vector3.one * stickerScale;
 
             var mr = sticker.GetComponent<MeshRenderer>();

@@ -203,7 +203,7 @@ namespace Rubik
                 if (st != null)
                 {
                     cubelet = st.cubelet;
-                    faceNWS = (st.transform.rotation * Vector3.forward).normalized; // Quadの前向き
+                    faceNWS = (st.transform.rotation * Vector3.forward).normalized; 
                     return true;
                 }
 
@@ -279,15 +279,19 @@ namespace Rubik
                     c.coord = new Vector3Int(RoundInt(v2.x), RoundInt(v2.y), RoundInt(v2.z));
                 }
 
+                Vector3    worldPos = c.transform.position;
+                Quaternion worldRot = c.transform.rotation;
+
                 // 位置・回転は cubeRoot ローカルでスナップ
-                Vector3 local = builder.cubeRoot.InverseTransformPoint(c.transform.position);
-                local = new Vector3(RoundGrid(local.x), RoundGrid(local.y), RoundGrid(local.z));
+                Vector3 localPos = builder.cubeRoot.InverseTransformPoint(worldPos);
+                localPos = new Vector3(RoundGrid(localPos.x), RoundGrid(localPos.y), RoundGrid(localPos.z));
+                Quaternion localRot = Quaternion.Inverse(builder.cubeRoot.rotation) * worldRot;
+                localRot = SnapLocalRotation90(localRot); // ★ 90°正規姿勢へ吸着（下に定義）
 
-                c.transform.SetParent(builder.cubeRoot, false);
-                c.transform.localPosition = local;
+                c.transform.SetParent(builder.cubeRoot, true);
 
-                Vector3 le = c.transform.localEulerAngles;
-                c.transform.localEulerAngles = new Vector3(Round90(le.x), Round90(le.y), Round90(le.z));
+                c.transform.localPosition = localPos;
+                c.transform.localRotation = localRot;
             }
 
             Destroy(pivot.gameObject);
@@ -308,6 +312,56 @@ namespace Rubik
             float r = Mathf.Round(deg / 90f) * 90f;
             r %= 360f; if (r < 0f) r += 360f;
             return r;
+        }
+        static readonly Vector3[] Axes = new Vector3[]
+        {
+            Vector3.right, -Vector3.right,
+            Vector3.up,    -Vector3.up,
+            Vector3.forward, -Vector3.forward
+        };
+
+        // 現在の localRotation に最も近い「±X/±Y/±Zだけで構成された正規姿勢」へスナップ
+        static Quaternion SnapLocalRotation90(Quaternion q)
+        {
+            // q の Right, Up, Forward を取り出し（localRotationなので cubeRoot基準）
+            Vector3 r = q * Vector3.right;
+            Vector3 u = q * Vector3.up;
+            Vector3 f = q * Vector3.forward;
+
+            // 候補は「Up に使う軸」と「Forward に使う軸」の組み合わせ（直交条件つき）
+            Quaternion bestQ = Quaternion.identity;
+            float bestDot = -1f;
+
+            for (int i = 0; i < Axes.Length; i++)
+            {
+                Vector3 upCand = Axes[i];
+
+                for (int j = 0; j < Axes.Length; j++)
+                {
+                    Vector3 fwdCand = Axes[j];
+                    if (Mathf.Abs(Vector3.Dot(upCand, fwdCand)) > 1e-4f) continue; // 直交のみ
+
+                    // 右手系にする（必要なら前方向を反転）
+                    Vector3 rightCand = Vector3.Cross(upCand, fwdCand);
+                    if (rightCand.sqrMagnitude < 0.5f)
+                    {
+                        // まれに退化したらスキップ
+                        continue;
+                    }
+
+                    // この基底の回転
+                    Quaternion qc = Quaternion.LookRotation(fwdCand, upCand);
+
+                    // q にどれだけ近いか（クォータニオンドットの絶対値）
+                    float d = Mathf.Abs(Quaternion.Dot(q, qc));
+                    if (d > bestDot)
+                    {
+                        bestDot = d;
+                        bestQ = qc;
+                    }
+                }
+            }
+            return bestQ;
         }
     }
 }
