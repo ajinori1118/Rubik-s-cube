@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Sticker
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Name: Mode1
+  m_Shader: {fileID: 4800000, guid: f42d457f5921ec1418192fc8c5a2f844, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -17,8 +17,7 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -86,6 +85,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AnimSpeed: 0.4
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -98,20 +98,61 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FaceIndex: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HueBack: 0.83
+    - _HueDown: 0.5
+    - _HueFB_A: 0.666667
+    - _HueFB_B: 0.083333
+    - _HueFront: 0.66
+    - _HueLR_A: 0.166667
+    - _HueLR_B: 0.833333
+    - _HueLeft: 0.16
+    - _HueMaxBack: 0.9
+    - _HueMaxDown: 0.6
+    - _HueMaxFB: 0.72
+    - _HueMaxFront: 0.72
+    - _HueMaxLR: 0.22
+    - _HueMaxLeft: 0.22
+    - _HueMaxRight: 0.4
+    - _HueMaxUD: 0.1
+    - _HueMaxUp: 0.1
+    - _HueMinBack: 0.8
+    - _HueMinDown: 0.5
+    - _HueMinFB: 0.62
+    - _HueMinFront: 0.62
+    - _HueMinLR: 0.13
+    - _HueMinLeft: 0.13
+    - _HueMinRight: 0.3
+    - _HueMinUD: 0
+    - _HueMinUp: 0
+    - _HuePairDelta: 0.12
+    - _HueRight: 0.33
+    - _HueUD_A: 0
+    - _HueUD_B: 0.333333
+    - _HueUp: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PhaseFB: 0.66
+    - _PhaseLR: 0.33
+    - _PhaseUD: 0
+    - _PulseHz: 1.2
+    - _PulseHzGlobal: 0.35
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Saturation: 0.9
+    - _Seed: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _UVRotDeg: 0
+    - _Value: 0.9
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
@@ -119,10 +160,11 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RubikCenter: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &681049442782892808
+--- !u!114 &2799408788544786366
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
